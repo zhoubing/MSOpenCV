@@ -105,9 +105,11 @@ Java_com_meishe_msopencv_ImageProcess_getIdNumber(JNIEnv *env, jclass clazz, job
 
     findContours(dst, contours, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
 
+    LOGI("contours size: %d\n", contours.size());
+
     for (int i = 0; i < contours.size(); i++) {
         Rect rect = boundingRect(contours.at(i));
-        //rectangle(dst, rect, Scalar(0, 0, 255));  // 在dst 图片上显示 rect 矩形
+//        rectangle(dst, rect, Scalar(0, 0, 255));  // 在dst 图片上显示 rect 矩形
         if (rect.width > rect.height * 9) {
             rects.push_back(rect);
             rectangle(dst, rect, Scalar(0, 255, 255));
