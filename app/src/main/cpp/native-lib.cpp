@@ -107,14 +107,32 @@ Java_com_meishe_msopencv_ImageProcess_getIdNumber(JNIEnv *env, jclass clazz, job
 
     LOGI("contours size: %d\n", contours.size());
 
+    int min_x = 0;
+
     for (int i = 0; i < contours.size(); i++) {
         Rect rect = boundingRect(contours.at(i));
-//        rectangle(dst, rect, Scalar(0, 0, 255));  // 在dst 图片上显示 rect 矩形
-        if (rect.width > rect.height * 9) {
-            rects.push_back(rect);
-            rectangle(dst, rect, Scalar(0, 255, 255));
-            dst_img = src_img(rect);
+
+        if (min_x == 0) {
+            min_x = rect.x;
+        } else {
+            if (rect.x < min_x && rect.width < rect.height * 8) {
+                min_x = rect.x;
+                rects.push_back(rect);
+                rectangle(dst, rect, Scalar(0, 255, 255));
+                dst_img = src_img(rect);
+            }
         }
+
+//        rectangle(dst, rect, Scalar(0, 0, 255));  // 在dst 图片上显示 rect 矩形
+
+
+
+
+//        if (rect.width > rect.height * 9) {
+//            rects.push_back(rect);
+//            rectangle(dst, rect, Scalar(0, 255, 255));
+//            dst_img = src_img(rect);
+//        }
 
     }
     // imshow("轮廓检测", dst);
